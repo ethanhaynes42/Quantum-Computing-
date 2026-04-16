@@ -342,16 +342,22 @@
                         <h3 class="text-2xl font-bold text-white mb-2">The Quantum Shift</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-8">AI Podcast Analysis</p>
                         
-                        <!-- Standard HTML5 Audio Player for maximum reliability -->
-                        <div class="w-full bg-black/50 p-4 rounded-2xl border border-white/10">
-                            <!-- INSTRUCTIONS FOR USER: Ensure your file is named podcast.m4a and is in the exact same folder as this HTML file -->
-                            <audio controls class="w-full">
-                                <source src="podcast.m4a" type="audio/mpeg">
-                                <source src="podcast.mp3" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <p class="text-[10px] text-slate-500 mt-4 italic">
-                                *Note: Save your audio file as <strong>podcast.m4a</strong> in the same folder as this website to play.
+                        <!-- Simplified Direct Audio Player -->
+                        <div class="w-full bg-black/50 p-6 rounded-2xl border border-white/10 flex flex-col items-center">
+                            <button id="playPodcastBtn" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-3 px-8 rounded-full mb-4 transition text-sm shadow-[0_0_15px_rgba(0,242,255,0.4)] flex items-center gap-2">
+                                <span>▶</span> Play Podcast
+                            </button>
+                            
+                            <div id="playerContainer" class="w-full mt-2">
+                                <p id="audioStatus" class="text-[11px] font-bold text-cyan-400 mb-3 truncate px-4 text-center hidden">Now Playing: Alabama's Quantum Shift</p>
+                                <audio id="customAudio" controls class="w-full">
+                                    <source src="Alabama’s_quantum_revolution_in_national_security (2).m4a" type="audio/mp4">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+
+                            <p class="text-[10px] text-slate-500 mt-4 italic leading-relaxed">
+                                *Note: To ensure playback, verify that your file <strong>Alabama’s_quantum_revolution_in_national_security (2).m4a</strong> is saved in the exact same folder as this website file.
                             </p>
                         </div>
                     </div>
@@ -406,8 +412,49 @@
         <p class="text-[9px] text-slate-600">Educational resource designed for the next generation.</p>
     </footer>
 
-    <!-- JavaScript for Tab Switching -->
+    <!-- JavaScript for Tab Switching and Audio -->
     <script>
+        // Audio Player Logic
+        const playBtn = document.getElementById('playPodcastBtn');
+        const customAudio = document.getElementById('customAudio');
+        const audioStatus = document.getElementById('audioStatus');
+
+        if(playBtn && customAudio) {
+            playBtn.addEventListener('click', function() {
+                if (customAudio.paused) {
+                    customAudio.play().then(() => {
+                        playBtn.innerHTML = '<span>⏸</span> Pause Podcast';
+                        audioStatus.classList.remove('hidden');
+                        audioStatus.classList.remove('text-red-500');
+                        audioStatus.classList.add('text-cyan-400');
+                        audioStatus.textContent = "🔊 Now Playing: Alabama's Quantum Shift";
+                    }).catch(err => {
+                        console.error("Audio playback error:", err);
+                        audioStatus.classList.remove('hidden');
+                        audioStatus.classList.remove('text-cyan-400');
+                        audioStatus.classList.add('text-red-500');
+                        audioStatus.innerHTML = "Error: Cannot find file.<br>Please ensure 'Alabama’s_quantum_revolution_in_national_security (2).m4a' is in the exact same folder as this webpage.";
+                    });
+                } else {
+                    customAudio.pause();
+                    playBtn.innerHTML = '<span>▶</span> Play Podcast';
+                    audioStatus.textContent = "Paused";
+                }
+            });
+
+            // Sync button text if user clicks the native audio controls instead
+            customAudio.addEventListener('play', () => {
+                playBtn.innerHTML = '<span>⏸</span> Pause Podcast';
+                audioStatus.classList.remove('hidden');
+                audioStatus.textContent = "🔊 Now Playing: Alabama's Quantum Shift";
+            });
+
+            customAudio.addEventListener('pause', () => {
+                playBtn.innerHTML = '<span>▶</span> Play Podcast';
+                audioStatus.textContent = "Paused";
+            });
+        }
+
         function openTab(tabId) {
             // 1. Hide all tab contents
             const contents = document.querySelectorAll('.tab-content');
