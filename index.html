@@ -35,741 +35,404 @@
             position: relative;
             border-radius: 1.5rem;
             background: var(--q-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
 
         .glow-border:hover {
             border-color: var(--q-cyan);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
-            transform: translateY(-8px);
+            box-shadow: 0 10px 30px -10px rgba(0, 242, 255, 0.2);
+            transform: translateY(-4px);
         }
 
-        .nav-link {
+        /* Tab Navigation Styles */
+        .tab-btn {
             position: relative;
             color: #94a3b8;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding-bottom: 4px;
         }
-        .nav-link:hover { color: var(--q-cyan); }
+        .tab-btn:hover { color: var(--q-cyan); }
+        .tab-btn.active {
+            color: var(--q-cyan);
+            font-weight: 700;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--q-cyan);
+            box-shadow: 0 0 10px var(--q-cyan);
+        }
 
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Background Effects */
         .orb {
             filter: blur(100px);
             position: fixed; 
             z-index: -1;
             border-radius: 50%;
             pointer-events: none;
-            opacity: 0.3;
-        }
-
-        section {
-            padding: 80px 0;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 0.25;
         }
 
         .grid-bg {
             background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
                               linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 50px 50px;
             position: fixed;
             inset: 0;
             z-index: -2;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--q-bg); }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--q-cyan); }
-
-        html { scroll-behavior: smooth; }
-
-        .feature-tag {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--q-cyan);
-            padding: 4px 12px;
-            border-radius: 99px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: inline-block;
-            margin-bottom: 12px;
+        /* Custom Audio Player */
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            outline: none;
+        }
+        audio::-webkit-media-controls-panel {
+            background-color: rgba(0, 242, 255, 0.1);
+            color: white;
         }
     </style>
 </head>
 <body>
 
+    <!-- Background Elements -->
     <div class="grid-bg"></div>
-    <div class="orb w-[800px] h-[800px] bg-cyan-900 top-[-30%] left-[-20%]"></div>
-    <div class="orb w-[600px] h-[600px] bg-purple-900 bottom-[-20%] right-[-20%]"></div>
+    <div class="orb w-[600px] h-[600px] bg-cyan-600 top-[-20%] left-[-10%]"></div>
+    <div class="orb w-[500px] h-[500px] bg-purple-600 bottom-[-10%] right-[-10%]"></div>
 
-    <header class="pt-12 pb-24 text-center px-6">
-        <nav class="mx-auto max-w-4xl mb-16 flex justify-between items-center bg-white/5 border border-white/10 px-8 py-4 rounded-full backdrop-blur-md sticky top-6 z-50">
-            <div class="brand font-bold text-xl tracking-tighter quantum-gradient">Q.HORIZONS</div>
-            <div class="flex gap-6 text-[10px] font-bold uppercase tracking-widest">
-                <a href="#home" class="nav-link">Intel</a>
-                <a href="#north-al" class="nav-link text-cyan-400">North AL Hub</a>
-                <a href="#toolkit" class="nav-link">Toolkit</a>
-                <a href="#impact" class="nav-link">Impact</a>
-                <a href="#resources" class="nav-link">Resources</a>
-            </div>
-        </nav>
-
-        <div class="space-y-6">
-            <span class="text-[11px] uppercase tracking-[0.5em] text-cyan-500 font-bold block mb-4">The Next Frontier</span>
-            <h1 class="text-7xl md:text-[8rem] font-bold tracking-tighter leading-none">
-                Quantum <span class="quantum-gradient">Horizon</span>
-            </h1>
-            <p class="text-slate-400 max-w-3xl mx-auto text-xl mt-8 leading-relaxed">
-                Breaking the limits of classical physics to solve the world's most complex challenges from the heart of Alabama.
-            </p>
-        </div>
+    <!-- Header (Scrolls naturally with the page) -->
+    <header class="pt-20 pb-16 text-center px-6">
+        <span class="inline-block px-4 py-1 mb-6 text-xs font-bold tracking-widest uppercase border border-cyan-500/30 rounded-full text-cyan-400 bg-cyan-500/10">
+            The Next Leap in Science
+        </span>
+        <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-tight mb-6">
+            Quantum <span class="quantum-gradient">Horizons</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
+            Moving beyond binary logic. Explore how subatomic physics is rewriting the future of technology, security, and space exploration right here in Alabama.
+        </p>
     </header>
 
-    <main class="container mx-auto px-6">
-
-        <!-- CORE CONCEPTS SECTION -->
-        <section id="home" class="visible">
-            <div class="text-center mb-16">
-                <span class="feature-tag">The Science</span>
-                <h2 class="text-5xl font-bold">The Three Pillars of Quantum</h2>
+    <!-- Sticky Tab Navigation -->
+    <div class="sticky top-4 z-50 px-6 mb-12">
+        <nav class="mx-auto max-w-4xl flex flex-wrap justify-center md:justify-between items-center bg-black/60 border border-white/10 px-8 py-4 rounded-3xl backdrop-blur-xl shadow-2xl">
+            <div class="brand font-bold text-xl tracking-tighter quantum-gradient hidden md:block">Q.HORIZONS</div>
+            <div class="flex gap-4 md:gap-8 text-[11px] font-bold uppercase tracking-widest">
+                <button class="tab-btn active" onclick="openTab('tab-intro')">Intro</button>
+                <button class="tab-btn text-cyan-400" onclick="openTab('tab-alabama')">North AL</button>
+                <button class="tab-btn" onclick="openTab('tab-toolkit')">Toolkit</button>
+                <button class="tab-btn" onclick="openTab('tab-impact')">Impact</button>
+                <button class="tab-btn" onclick="openTab('tab-resources')">Links</button>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">1. Superposition</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Imagine a coin spinning on a table. While it's spinning, it isn't "heads" or "tails"—it's a blur of both. In quantum computing, a <strong>Qubit</strong> works the same way. It can perform multiple calculations at once because it exists in every possible state simultaneously until we measure it.
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 pb-24 max-w-5xl">
+
+        <!-- TAB 1: INTRO (ACTIVE BY DEFAULT) -->
+        <div id="tab-intro" class="tab-content active">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">Bits vs. Qubits</h2>
+                <p class="text-slate-400 mt-4">Understanding the foundation of the quantum revolution.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="glow-border p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">The Classical World</h3>
+                    <p class="text-slate-400 leading-relaxed mb-4">
+                        Everything your computer, phone, or gaming console does is based on <strong>Bits</strong>. A bit is simply a tiny switch that is either ON (1) or OFF (0). 
                     </p>
-                    <ul class="text-[11px] space-y-2 text-cyan-500 font-bold uppercase">
-                        <li>• Parallel Processing</li>
-                        <li>• Infinite Probability</li>
-                    </ul>
+                    <p class="text-slate-400 leading-relaxed">
+                        To solve a maze, a classical computer tries one path, hits a dead end, backs up, and tries the next path until it finds the exit. It is fast, but it is linear.
+                    </p>
                 </div>
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">2. Entanglement</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        This is what Einstein called "Spooky Action at a Distance." You can link two particles so that no matter how far apart they are—even across the galaxy—what happens to one happens to the other instantly. This allows for incredibly fast data transfer and unhackable security systems.
+                <div class="glow-border p-8 border-cyan-500/30 bg-cyan-900/10">
+                    <h3 class="text-2xl font-bold text-white mb-4">The Quantum World</h3>
+                    <p class="text-slate-400 leading-relaxed mb-4">
+                        Quantum computers use <strong>Qubits</strong> (Quantum Bits). Thanks to a rule of physics called <em>Superposition</em>, a qubit can be a 1, a 0, or both at the exact same time.
                     </p>
-                    <ul class="text-[11px] space-y-2 text-purple-500 font-bold uppercase">
-                        <li>• Teleported Logic</li>
-                        <li>• Instant Sync</li>
-                    </ul>
-                </div>
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">3. Interference</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Think of waves in an ocean. When two waves hit each other, they can either get bigger (constructive) or cancel each other out (destructive). Quantum algorithms use this to "cancel out" wrong answers and "amplify" the correct one, leading the computer to the right solution almost instantly.
+                    <p class="text-slate-400 leading-relaxed">
+                        To solve that same maze, a quantum computer floods the maze with water, exploring <strong>every single path at the exact same time</strong> to find the exit instantly.
                     </p>
-                    <ul class="text-[11px] space-y-2 text-blue-500 font-bold uppercase">
-                        <li>• Algorithmic Bias</li>
-                        <li>• Error Reduction</li>
-                    </ul>
                 </div>
             </div>
-        </section>
 
-        <!-- NORTH ALABAMA HUB SECTION -->
-        <section id="north-al">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="glow-border p-8 text-center bg-white/5">
+                <h3 class="text-2xl font-bold text-white mb-6">The Three Core Rules</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <div class="text-3xl mb-2 text-cyan-400">⭕</div>
+                        <h4 class="font-bold text-white">Superposition</h4>
+                        <p class="text-xs text-slate-400 mt-2">Being in multiple states at once, granting exponential processing power.</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-2 text-purple-400">🔗</div>
+                        <h4 class="font-bold text-white">Entanglement</h4>
+                        <p class="text-xs text-slate-400 mt-2">Two particles linking together across distance, allowing for instant data sharing.</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-2 text-blue-400">🌊</div>
+                        <h4 class="font-bold text-white">Interference</h4>
+                        <p class="text-xs text-slate-400 mt-2">Combining waves to cancel out wrong answers and amplify the correct solution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: NORTH ALABAMA HUB -->
+        <div id="tab-alabama" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">The Rocket City's Next Mission</h2>
+                <p class="text-slate-400 mt-4">How Huntsville and North Alabama are leading the nation in Quantum tech.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Column 1 -->
+                <div class="space-y-8">
+                    <div class="glow-border p-8 bg-gradient-to-b from-cyan-900/20 to-transparent">
+                        <div class="text-4xl mb-4">🚀</div>
+                        <h3 class="text-xl font-bold text-white mb-2">NASA Marshall</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            NASA is researching <strong>Quantum Clock Synchronization</strong> in Huntsville. For deep space missions to Mars, even a microscopic timing error can send a ship off course. Quantum entanglement ensures perfect timing across the solar system without signal delay.
+                        </p>
+                    </div>
+                </div>
+                <!-- Column 2 -->
+                <div class="space-y-8">
+                    <div class="glow-border p-8 bg-gradient-to-b from-purple-900/20 to-transparent">
+                        <div class="text-4xl mb-4">🛡️</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Redstone Arsenal</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            The Department of Defense is developing <strong>Quantum Magnetometers</strong>. These sensors are so incredibly sensitive that they can map underground tunnels, submarines, or mineral deposits just by measuring tiny shifts in the Earth's magnetic field.
+                        </p>
+                    </div>
+                </div>
+                <!-- Column 3 -->
+                <div class="space-y-8">
+                    <div class="glow-border p-8 bg-gradient-to-b from-blue-900/20 to-transparent">
+                        <div class="text-4xl mb-4">🎓</div>
+                        <h3 class="text-xl font-bold text-white mb-2">UAH Engineering</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            The University of Alabama in Huntsville (UAH) is building the optics and lasers needed for a future <strong>Quantum Internet</strong>. They are training the next generation of engineers to build hardware that hackers literally cannot break into.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 glow-border p-10 bg-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div>
-                    <span class="feature-tag">The Rocket City Revolution</span>
-                    <h2 class="text-5xl font-bold mb-8">Huntsville: The Silicon Valley of the South</h2>
-                    <p class="text-slate-400 text-lg leading-relaxed mb-8">
-                        North Alabama is uniquely positioned to lead the Quantum revolution. With the highest concentration of engineers in the country, Huntsville is transitioning from "Rocket City" to "Quantum City."
+                    <h3 class="text-2xl font-bold text-white mb-2">The "Quantum Alley" Vision</h3>
+                    <p class="text-slate-400 text-sm max-w-xl">
+                        A massive coalition of tech companies in Cummings Research Park is pooling resources to create a dedicated quantum manufacturing sector. The goal is to design, test, and build the hardware of the future entirely within North Alabama.
                     </p>
-                    
-                    <div class="space-y-6">
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-cyan-500">
-                            <h4 class="text-xl font-bold text-white mb-2">Space Exploration</h4>
-                            <p class="text-sm text-slate-400">NASA Marshall is researching <strong>Quantum Clock Synchronization</strong>. On a mission to Mars, even a billionth of a second error can send a ship off course. Quantum clocks ensure perfect timing across the solar system.</p>
-                        </div>
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-purple-500">
-                            <h4 class="text-xl font-bold text-white mb-2">Defense & Security</h4>
-                            <p class="text-sm text-slate-400">Redstone Arsenal is developing <strong>Quantum Magnetometers</strong>. These devices are so sensitive they can "see" through solid rock to find minerals or underground structures without ever digging a hole.</p>
-                        </div>
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-blue-500">
-                            <h4 class="text-xl font-bold text-white mb-2">The UAH Connection</h4>
-                            <p class="text-sm text-slate-400">UAH's Center for Applied Optics is creating the lenses and lasers needed to move "light-based" quantum information through fiber optic cables, potentially making Alabama the hub of a new Quantum Internet.</p>
-                        </div>
-                    </div>
                 </div>
-                <div class="glow-border p-12 bg-gradient-to-br from-cyan-900/20 to-transparent">
-                    <h3 class="text-3xl font-bold mb-6">Project Spotlights</h3>
-                    <div class="space-y-8">
-                        <div class="flex gap-6">
-                            <div class="text-3xl">📡</div>
-                            <div>
-                                <h4 class="font-bold text-white">Quantum Comms Relay</h4>
-                                <p class="text-xs text-slate-500 mt-1">A partnership between local startups and the DoD to create communication that cannot be intercepted or listened to by hackers.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="text-3xl">💊</div>
-                            <div>
-                                <h4 class="font-bold text-white">Molecular Mapping</h4>
-                                <p class="text-xs text-slate-500 mt-1">Huntsville biotech firms are using quantum simulations to map how proteins fold, speeding up the creation of life-saving medicines from years to weeks.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="text-3xl">🔋</div>
-                            <div>
-                                <h4 class="font-bold text-white">Battery Breakthroughs</h4>
-                                <p class="text-xs text-slate-500 mt-1">Using quantum chemistry to find new materials for electric vehicle batteries that charge in minutes and last for thousands of miles.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-12 pt-8 border-t border-white/10 text-center">
-                        <div class="text-4xl font-bold text-white mb-2">$250M+</div>
-                        <div class="text-[10px] uppercase tracking-widest text-cyan-500 font-bold">Economic Impact Projected by 2030</div>
-                    </div>
+                <div class="text-center shrink-0">
+                    <div class="text-4xl font-bold text-cyan-400 mb-1">$40M+</div>
+                    <div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">In Active Regional Grants</div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- TOOLKIT SECTION -->
-        <section id="toolkit">
-            <div class="text-center mb-16">
-                <span class="feature-tag">Engineering the Future</span>
-                <h2 class="text-5xl font-bold">The Hardware Layer</h2>
-                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">It takes some of the world's most extreme environments to make a quantum computer work.</p>
+        <!-- TAB 3: THE TOOLKIT (HARDWARE) -->
+        <div id="tab-toolkit" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">The Hardware Layer</h2>
+                <p class="text-slate-400 mt-4">Building a quantum computer requires extreme engineering.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">❄️</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Superconducting</span>
+                <div class="glow-border p-8 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-2xl">❄️</div>
+                        <h3 class="text-xl font-bold text-white">Superconducting Loops</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">The Dilution Refrigerator</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        To keep qubits from "crashing" (decoherence), they must be kept colder than deep space. These giant golden chandeliers use liquid helium to reach temperatures of **15 Millikelvin**. At this temperature, electricity flows perfectly, allowing quantum states to survive.
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Used by IBM and Google. They use tiny loops of wire kept inside giant "Dilution Refrigerators." These fridges cool the chips to <strong>15 Millikelvin</strong>—which is colder than outer space. At this temperature, electricity flows perfectly without resistance.
                     </p>
+                    <span class="text-[10px] uppercase font-bold text-cyan-500 tracking-widest">Industry Standard</span>
                 </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">⚡</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Ion Trap</span>
+
+                <div class="glow-border p-8 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">⚡</div>
+                        <h3 class="text-xl font-bold text-white">Trapped Ions</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Trapped Ion Clusters</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Instead of using wires, we use electromagnetic fields to suspend individual atoms in mid-air inside a vacuum. We then hit them with precisely tuned lasers to flip their quantum state. This is one of the most stable ways to build a computer today.
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Instead of wires, scientists use strong electromagnetic fields to trap individual, glowing atoms in mid-air inside a perfect vacuum. They then use high-precision lasers to "write" and "read" data on the atoms.
                     </p>
+                    <span class="text-[10px] uppercase font-bold text-purple-500 tracking-widest">Highly Stable</span>
                 </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">🔦</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Photonics</span>
+
+                <div class="glow-border p-8 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center text-2xl">🔦</div>
+                        <h3 class="text-xl font-bold text-white">Photonics</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Light-Speed Qubits</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Using "photons" or particles of light as qubits. Since light doesn't generate heat, these computers don't need massive cooling systems. They can also plug directly into existing fiber-optic cables, making them perfect for building a global quantum network.
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Using particles of light (photons) to carry quantum information. Because light doesn't easily interact with its environment, photonic computers might eventually work at room temperature, without massive cooling systems.
                     </p>
+                    <span class="text-[10px] uppercase font-bold text-pink-500 tracking-widest">Room Temperature Potential</span>
                 </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">💎</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Diamond Vacancy</span>
+
+                <div class="glow-border p-8 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">💎</div>
+                        <h3 class="text-xl font-bold text-white">Diamond Vacancies</h3>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Synthetic Diamonds</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Researchers are finding that tiny "impurities" in lab-grown diamonds can hold quantum information. Because diamond is so rigid, it protects the qubit from outside noise, potentially allowing for quantum sensors that work at room temperature.
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Researchers purposely create microscopic flaws in lab-grown diamonds. They can shoot a laser into that flaw to trap an electron and use it as a qubit. The incredibly tough diamond structure protects the qubit from outside noise.
                     </p>
+                    <span class="text-[10px] uppercase font-bold text-blue-500 tracking-widest">Sensor Applications</span>
                 </div>
             </div>
-        </section>
-
-        <!-- IMPACT SECTION -->
-        <section id="impact">
-            <div class="glow-border p-16 bg-gradient-to-br from-purple-900/10 to-cyan-900/10">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-5xl font-bold mb-12 text-center">How This Changes Your Life</h2>
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div class="space-y-8">
-                            <div>
-                                <h4 class="text-cyan-400 font-bold mb-2 uppercase text-xs tracking-widest">Environment</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Smarter Energy</h3>
-                                <p class="text-slate-400 text-sm">Quantum computers can design a new "Smart Grid" for Alabama that automatically routes power from solar and wind farms to where it's needed most, reducing waste and lowering your power bill.</p>
-                            </div>
-                            <div>
-                                <h4 class="text-purple-400 font-bold mb-2 uppercase text-xs tracking-widest">Healthcare</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Personalized Medicine</h3>
-                                <p class="text-slate-400 text-sm">Today, doctors use a "one size fits all" approach to medicine. Quantum can simulate *your* specific DNA to tell a doctor exactly which medicine will work for you without any side effects.</p>
-                            </div>
-                        </div>
-                        <div class="space-y-8">
-                            <div>
-                                <h4 class="text-blue-400 font-bold mb-2 uppercase text-xs tracking-widest">Logistics</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Traffic-Free Cities</h3>
-                                <p class="text-slate-400 text-sm">By calculating every car's route at the same time, quantum systems can manage traffic lights and delivery routes perfectly, ending traffic jams in cities like Birmingham and Huntsville.</p>
-                            </div>
-                            <div class="p-8 bg-black/40 rounded-3xl border border-white/10">
-                                <p class="text-[10px] uppercase font-bold text-cyan-500 mb-2">Listen to the Podcast</p>
-                                <h4 class="text-white font-bold mb-4">Deep Dive: The Quantum Shift</h4>
-                                <audio controls class="w-full h-8 opacity-60">
-                                    <source src="<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Horizons | Future of Computing</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --q-cyan: #00f2ff;
-            --q-purple: #9d00ff;
-            --q-bg: #03040a;
-            --q-card: rgba(10, 11, 20, 0.7);
-        }
-        
-        body {
-            background-color: var(--q-bg);
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto; 
-            min-height: 100vh;
-        }
-
-        h1, h2, h3, h4, .brand { font-family: 'Space Grotesk', sans-serif; }
-
-        .quantum-gradient {
-            background: linear-gradient(135deg, var(--q-purple), var(--q-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .glow-border {
-            position: relative;
-            border-radius: 1.5rem;
-            background: var(--q-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .glow-border:hover {
-            border-color: var(--q-cyan);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
-            transform: translateY(-8px);
-        }
-
-        .nav-link {
-            position: relative;
-            color: #94a3b8;
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover { color: var(--q-cyan); }
-
-        .orb {
-            filter: blur(100px);
-            position: fixed; 
-            z-index: -1;
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        section {
-            padding: 80px 0;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .grid-bg {
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--q-bg); }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--q-cyan); }
-
-        html { scroll-behavior: smooth; }
-
-        .feature-tag {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--q-cyan);
-            padding: 4px 12px;
-            border-radius: 99px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="grid-bg"></div>
-    <div class="orb w-[800px] h-[800px] bg-cyan-900 top-[-30%] left-[-20%]"></div>
-    <div class="orb w-[600px] h-[600px] bg-purple-900 bottom-[-20%] right-[-20%]"></div>
-
-    <header class="pt-12 pb-24 text-center px-6">
-        <nav class="mx-auto max-w-4xl mb-16 flex justify-between items-center bg-white/5 border border-white/10 px-8 py-4 rounded-full backdrop-blur-md sticky top-6 z-50">
-            <div class="brand font-bold text-xl tracking-tighter quantum-gradient">Q.HORIZONS</div>
-            <div class="flex gap-6 text-[10px] font-bold uppercase tracking-widest">
-                <a href="#home" class="nav-link">Intel</a>
-                <a href="#north-al" class="nav-link text-cyan-400">North AL Hub</a>
-                <a href="#toolkit" class="nav-link">Toolkit</a>
-                <a href="#impact" class="nav-link">Impact</a>
-                <a href="#resources" class="nav-link">Resources</a>
-            </div>
-        </nav>
-
-        <div class="space-y-6">
-            <span class="text-[11px] uppercase tracking-[0.5em] text-cyan-500 font-bold block mb-4">The Next Frontier</span>
-            <h1 class="text-7xl md:text-[8rem] font-bold tracking-tighter leading-none">
-                Quantum <span class="quantum-gradient">Horizon</span>
-            </h1>
-            <p class="text-slate-400 max-w-3xl mx-auto text-xl mt-8 leading-relaxed">
-                Breaking the limits of classical physics to solve the world's most complex challenges from the heart of Alabama.
-            </p>
         </div>
-    </header>
 
-    <main class="container mx-auto px-6">
-
-        <!-- CORE CONCEPTS SECTION -->
-        <section id="home" class="visible">
-            <div class="text-center mb-16">
-                <span class="feature-tag">The Science</span>
-                <h2 class="text-5xl font-bold">The Three Pillars of Quantum</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">1. Superposition</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Imagine a coin spinning on a table. While it's spinning, it isn't "heads" or "tails"—it's a blur of both. In quantum computing, a <strong>Qubit</strong> works the same way. It can perform multiple calculations at once because it exists in every possible state simultaneously until we measure it.
-                    </p>
-                    <ul class="text-[11px] space-y-2 text-cyan-500 font-bold uppercase">
-                        <li>• Parallel Processing</li>
-                        <li>• Infinite Probability</li>
-                    </ul>
-                </div>
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">2. Entanglement</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        This is what Einstein called "Spooky Action at a Distance." You can link two particles so that no matter how far apart they are—even across the galaxy—what happens to one happens to the other instantly. This allows for incredibly fast data transfer and unhackable security systems.
-                    </p>
-                    <ul class="text-[11px] space-y-2 text-purple-500 font-bold uppercase">
-                        <li>• Teleported Logic</li>
-                        <li>• Instant Sync</li>
-                    </ul>
-                </div>
-                <div class="glow-border p-10">
-                    <h3 class="text-2xl font-bold text-white mb-4">3. Interference</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Think of waves in an ocean. When two waves hit each other, they can either get bigger (constructive) or cancel each other out (destructive). Quantum algorithms use this to "cancel out" wrong answers and "amplify" the correct one, leading the computer to the right solution almost instantly.
-                    </p>
-                    <ul class="text-[11px] space-y-2 text-blue-500 font-bold uppercase">
-                        <li>• Algorithmic Bias</li>
-                        <li>• Error Reduction</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- NORTH ALABAMA HUB SECTION -->
-        <section id="north-al">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <span class="feature-tag">The Rocket City Revolution</span>
-                    <h2 class="text-5xl font-bold mb-8">Huntsville: The Silicon Valley of the South</h2>
-                    <p class="text-slate-400 text-lg leading-relaxed mb-8">
-                        North Alabama is uniquely positioned to lead the Quantum revolution. With the highest concentration of engineers in the country, Huntsville is transitioning from "Rocket City" to "Quantum City."
-                    </p>
-                    
-                    <div class="space-y-6">
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-cyan-500">
-                            <h4 class="text-xl font-bold text-white mb-2">Space Exploration</h4>
-                            <p class="text-sm text-slate-400">NASA Marshall is researching <strong>Quantum Clock Synchronization</strong>. On a mission to Mars, even a billionth of a second error can send a ship off course. Quantum clocks ensure perfect timing across the solar system.</p>
-                        </div>
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-purple-500">
-                            <h4 class="text-xl font-bold text-white mb-2">Defense & Security</h4>
-                            <p class="text-sm text-slate-400">Redstone Arsenal is developing <strong>Quantum Magnetometers</strong>. These devices are so sensitive they can "see" through solid rock to find minerals or underground structures without ever digging a hole.</p>
-                        </div>
-                        <div class="p-6 bg-white/5 rounded-2xl border-l-4 border-blue-500">
-                            <h4 class="text-xl font-bold text-white mb-2">The UAH Connection</h4>
-                            <p class="text-sm text-slate-400">UAH's Center for Applied Optics is creating the lenses and lasers needed to move "light-based" quantum information through fiber optic cables, potentially making Alabama the hub of a new Quantum Internet.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glow-border p-12 bg-gradient-to-br from-cyan-900/20 to-transparent">
-                    <h3 class="text-3xl font-bold mb-6">Project Spotlights</h3>
-                    <div class="space-y-8">
-                        <div class="flex gap-6">
-                            <div class="text-3xl">📡</div>
-                            <div>
-                                <h4 class="font-bold text-white">Quantum Comms Relay</h4>
-                                <p class="text-xs text-slate-500 mt-1">A partnership between local startups and the DoD to create communication that cannot be intercepted or listened to by hackers.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="text-3xl">💊</div>
-                            <div>
-                                <h4 class="font-bold text-white">Molecular Mapping</h4>
-                                <p class="text-xs text-slate-500 mt-1">Huntsville biotech firms are using quantum simulations to map how proteins fold, speeding up the creation of life-saving medicines from years to weeks.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="text-3xl">🔋</div>
-                            <div>
-                                <h4 class="font-bold text-white">Battery Breakthroughs</h4>
-                                <p class="text-xs text-slate-500 mt-1">Using quantum chemistry to find new materials for electric vehicle batteries that charge in minutes and last for thousands of miles.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-12 pt-8 border-t border-white/10 text-center">
-                        <div class="text-4xl font-bold text-white mb-2">$250M+</div>
-                        <div class="text-[10px] uppercase tracking-widest text-cyan-500 font-bold">Economic Impact Projected by 2030</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TOOLKIT SECTION -->
-        <section id="toolkit">
-            <div class="text-center mb-16">
-                <span class="feature-tag">Engineering the Future</span>
-                <h2 class="text-5xl font-bold">The Hardware Layer</h2>
-                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">It takes some of the world's most extreme environments to make a quantum computer work.</p>
+        <!-- TAB 4: IMPACT & PODCAST -->
+        <div id="tab-impact" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">Changing the World</h2>
+                <p class="text-slate-400 mt-4">Real-world applications of quantum advantage.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">❄️</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Superconducting</span>
+            <div class="grid lg:grid-cols-2 gap-12 mb-12">
+                <div class="space-y-6">
+                    <div class="glow-border p-6 bg-white/5 border-l-4 border-cyan-500">
+                        <h4 class="text-lg font-bold text-white mb-2">🧪 Medical Cures in Days</h4>
+                        <p class="text-slate-400 text-sm">Simulating how proteins fold is currently too hard for normal computers. Quantum computers can model atomic interactions perfectly, allowing researchers to design custom drugs and cures in weeks rather than decades.</p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">The Dilution Refrigerator</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        To keep qubits from "crashing" (decoherence), they must be kept colder than deep space. These giant golden chandeliers use liquid helium to reach temperatures of **15 Millikelvin**. At this temperature, electricity flows perfectly, allowing quantum states to survive.
-                    </p>
-                </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">⚡</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Ion Trap</span>
+                    <div class="glow-border p-6 bg-white/5 border-l-4 border-purple-500">
+                        <h4 class="text-lg font-bold text-white mb-2">🌍 Clean Energy</h4>
+                        <p class="text-slate-400 text-sm">Fertilizer production uses 2% of the world's energy. Quantum simulation can unlock the secret of "nitrogen fixation" used by plants, potentially saving billions in energy costs and cutting global emissions.</p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Trapped Ion Clusters</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Instead of using wires, we use electromagnetic fields to suspend individual atoms in mid-air inside a vacuum. We then hit them with precisely tuned lasers to flip their quantum state. This is one of the most stable ways to build a computer today.
-                    </p>
-                </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">🔦</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Photonics</span>
+                    <div class="glow-border p-6 bg-white/5 border-l-4 border-blue-500">
+                        <h4 class="text-lg font-bold text-white mb-2">🔐 Unhackable Data</h4>
+                        <p class="text-slate-400 text-sm">Quantum Key Distribution (QKD) creates security keys using entanglement. If a hacker tries to read the data, the laws of physics cause the data to instantly change, making it mathematically unhackable.</p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Light-Speed Qubits</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Using "photons" or particles of light as qubits. Since light doesn't generate heat, these computers don't need massive cooling systems. They can also plug directly into existing fiber-optic cables, making them perfect for building a global quantum network.
-                    </p>
                 </div>
-                <div class="p-10 glow-border group">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="text-5xl">💎</div>
-                        <span class="text-[10px] font-bold text-slate-500 border border-slate-700 px-3 py-1 rounded-full uppercase">Diamond Vacancy</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Synthetic Diamonds</h3>
-                    <p class="text-slate-400 leading-relaxed">
-                        Researchers are finding that tiny "impurities" in lab-grown diamonds can hold quantum information. Because diamond is so rigid, it protects the qubit from outside noise, potentially allowing for quantum sensors that work at room temperature.
-                    </p>
-                </div>
-            </div>
-        </section>
 
-        <!-- IMPACT SECTION -->
-        <section id="impact">
-            <div class="glow-border p-16 bg-gradient-to-br from-purple-900/10 to-cyan-900/10">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-5xl font-bold mb-12 text-center">How This Changes Your Life</h2>
-                    <div class="grid md:grid-cols-2 gap-12">
-                        <div class="space-y-8">
-                            <div>
-                                <h4 class="text-cyan-400 font-bold mb-2 uppercase text-xs tracking-widest">Environment</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Smarter Energy</h3>
-                                <p class="text-slate-400 text-sm">Quantum computers can design a new "Smart Grid" for Alabama that automatically routes power from solar and wind farms to where it's needed most, reducing waste and lowering your power bill.</p>
-                            </div>
-                            <div>
-                                <h4 class="text-purple-400 font-bold mb-2 uppercase text-xs tracking-widest">Healthcare</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Personalized Medicine</h3>
-                                <p class="text-slate-400 text-sm">Today, doctors use a "one size fits all" approach to medicine. Quantum can simulate *your* specific DNA to tell a doctor exactly which medicine will work for you without any side effects.</p>
-                            </div>
+                <!-- Podcast Player -->
+                <div class="flex flex-col justify-center">
+                    <div class="glow-border p-10 bg-gradient-to-br from-black to-slate-900 text-center shadow-2xl">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-cyan-500/20 flex items-center justify-center text-4xl mb-6 shadow-[0_0_30px_rgba(0,242,255,0.3)]">
+                            🎙️
                         </div>
-                        <div class="space-y-8">
-                            <div>
-                                <h4 class="text-blue-400 font-bold mb-2 uppercase text-xs tracking-widest">Logistics</h4>
-                                <h3 class="text-2xl font-bold text-white mb-3">Traffic-Free Cities</h3>
-                                <p class="text-slate-400 text-sm">By calculating every car's route at the same time, quantum systems can manage traffic lights and delivery routes perfectly, ending traffic jams in cities like Birmingham and Huntsville.</p>
-                            </div>
-                            <div class="p-8 bg-black/40 rounded-3xl border border-white/10">
-                                <p class="text-[10px] uppercase font-bold text-cyan-500 mb-2">Listen to the Podcast</p>
-                                <h4 class="text-white font-bold mb-4">Deep Dive: The Quantum Shift</h4>
-                                <audio controls class="w-full h-8 opacity-60">
-                                    <source src="Alabama’s_quantum_revolution_in_national_security (2).m4a" type="audio/mpeg">
-                                </audio>
-                            </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">The Quantum Shift</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-bold mb-8">AI Podcast Analysis</p>
+                        
+                        <!-- Standard HTML5 Audio Player for maximum reliability -->
+                        <div class="w-full bg-black/50 p-4 rounded-2xl border border-white/10">
+                            <!-- INSTRUCTIONS FOR USER: Ensure your file is named podcast.m4a and is in the exact same folder as this HTML file -->
+                            <audio controls class="w-full">
+                                <source src="podcast.m4a" type="audio/mpeg">
+                                <source src="podcast.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <p class="text-[10px] text-slate-500 mt-4 italic">
+                                *Note: Save your audio file as <strong>podcast.m4a</strong> in the same folder as this website to play.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- RESOURCES SECTION -->
-        <section id="resources">
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- TAB 5: RESOURCES -->
+        <div id="tab-resources" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">Curated Knowledge</h2>
+                <p class="text-slate-400 mt-4">Links, tools, and academic programs to continue your journey.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <a href="https://www.ibm.com/quantum" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">IBM Q Experience</h4>
-                    <p class="text-xs text-slate-500 mb-4">Drag and drop quantum gates and run them on a real computer in New York.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">GO TO CLOUD →</div>
+                    <div class="text-3xl mb-4">☁️</div>
+                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">IBM Quantum</h4>
+                    <p class="text-xs text-slate-500 mb-6">Build quantum circuits and run them on real quantum hardware for free.</p>
+                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">ACCESS →</div>
                 </a>
+                
                 <a href="https://qiskit.org" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Qiskit Textbook</h4>
-                    <p class="text-xs text-slate-500 mb-4">The ultimate guide to learning quantum algorithms using Python.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">START LEARNING →</div>
+                    <div class="text-3xl mb-4">💻</div>
+                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Qiskit</h4>
+                    <p class="text-xs text-slate-500 mb-6">The ultimate open-source Python library for quantum developers.</p>
+                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">START CODING →</div>
                 </a>
-                <a href="https://www.uah.edu" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">UAH Engineering</h4>
-                    <p class="text-xs text-slate-500 mb-4">Explore the Physics and CS departments leading Alabama's research.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">VIEW PROGRAMS →</div>
+
+                <a href="https://www.uah.edu/science/departments/physics" target="_blank" class="glow-border p-8 group">
+                    <div class="text-3xl mb-4">🏫</div>
+                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">UAH Physics</h4>
+                    <p class="text-xs text-slate-500 mb-6">Explore the physics and engineering degree programs right here in Huntsville.</p>
+                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">ACADEMICS →</div>
                 </a>
-                <a href="https://quantum-computing.ibm.com/composer" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Quantum Composer</h4>
-                    <p class="text-xs text-slate-500 mb-4">A visual tool to build quantum circuits without writing a single line of code.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">OPEN COMPOSER →</div>
+
+                <a href="https://quantumcomputingreport.com/" target="_blank" class="glow-border p-8 group">
+                    <div class="text-3xl mb-4">📰</div>
+                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Quantum Report</h4>
+                    <p class="text-xs text-slate-500 mb-6">Stay updated with the latest breakthroughs, startup funding, and national policies.</p>
+                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">READ NEWS →</div>
                 </a>
             </div>
-        </section>
+        </div>
 
-        <footer class="py-24 text-center">
-            <div class="w-16 h-[1px] bg-white/10 mx-auto mb-10"></div>
-            <p class="text-[10px] uppercase tracking-[0.5em] text-slate-600 font-bold mb-2">&copy; 2024 Quantum Horizons Alabama</p>
-            <p class="text-[9px] text-slate-700 uppercase tracking-widest">Built for the next generation of engineers</p>
-        </footer>
     </main>
 
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/10 text-center mt-12 bg-black/40">
+        <div class="font-bold text-lg tracking-tighter quantum-gradient mb-2">Q.HORIZONS</div>
+        <p class="text-[10px] uppercase tracking-[0.4em] text-slate-500 font-bold mb-1">&copy; 2024 Alabama Tech Initiative</p>
+        <p class="text-[9px] text-slate-600">Educational resource designed for the next generation.</p>
+    </footer>
+
+    <!-- JavaScript for Tab Switching -->
     <script>
-        // Reveal sections on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+        function openTab(tabId) {
+            // 1. Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
             });
-        }, observerOptions);
 
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
+            // 2. Remove active state from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                // reset color classes on buttons
+                button.classList.remove('text-cyan-400');
+            });
 
-        // Parallax for background orbs
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.orb');
-            const x = (e.clientX / window.innerWidth) - 0.5;
-            const y = (e.clientY / window.innerHeight) - 0.5;
+            // 3. Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // 4. Add active state to the clicked button
+            event.currentTarget.classList.add('active');
+            event.currentTarget.classList.add('text-cyan-400');
             
-            orbs.forEach((orb, index) => {
-                const depth = (index + 1) * 60;
-                orb.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
-            });
-        });
-    </script>
-</body>
-</html>" type="audio/mpeg">
-                                </audio>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RESOURCES SECTION -->
-        <section id="resources">
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <a href="https://www.ibm.com/quantum" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">IBM Q Experience</h4>
-                    <p class="text-xs text-slate-500 mb-4">Drag and drop quantum gates and run them on a real computer in New York.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">GO TO CLOUD →</div>
-                </a>
-                <a href="https://qiskit.org" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Qiskit Textbook</h4>
-                    <p class="text-xs text-slate-500 mb-4">The ultimate guide to learning quantum algorithms using Python.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">START LEARNING →</div>
-                </a>
-                <a href="https://www.uah.edu" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">UAH Engineering</h4>
-                    <p class="text-xs text-slate-500 mb-4">Explore the Physics and CS departments leading Alabama's research.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">VIEW PROGRAMS →</div>
-                </a>
-                <a href="https://quantum-computing.ibm.com/composer" target="_blank" class="glow-border p-8 group">
-                    <h4 class="text-white font-bold mb-2 group-hover:text-cyan-400 transition">Quantum Composer</h4>
-                    <p class="text-xs text-slate-500 mb-4">A visual tool to build quantum circuits without writing a single line of code.</p>
-                    <div class="text-cyan-500 text-[10px] font-bold tracking-widest">OPEN COMPOSER →</div>
-                </a>
-            </div>
-        </section>
-
-        <footer class="py-24 text-center">
-            <div class="w-16 h-[1px] bg-white/10 mx-auto mb-10"></div>
-            <p class="text-[10px] uppercase tracking-[0.5em] text-slate-600 font-bold mb-2">&copy; 2024 Quantum Horizons Alabama</p>
-            <p class="text-[9px] text-slate-700 uppercase tracking-widest">Built for the next generation of engineers</p>
-        </footer>
-    </main>
-
-    <script>
-        // Reveal sections on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Parallax for background orbs
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.orb');
-            const x = (e.clientX / window.innerWidth) - 0.5;
-            const y = (e.clientY / window.innerHeight) - 0.5;
-            
-            orbs.forEach((orb, index) => {
-                const depth = (index + 1) * 60;
-                orb.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
-            });
-        });
+            // Optional: Scroll back to the top of the content area smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
